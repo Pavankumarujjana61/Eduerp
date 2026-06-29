@@ -17,8 +17,8 @@ async function syncAndSeed() {
     // 1. Initialize DB creation if not exists
     await initSequelize();
 
-    // 2. Sync schema - use force:false, alter:false for fast startup
-    await sequelize.sync({ alter: false, force: false });
+    // 2. Sync schema - create tables if they don't exist
+    await sequelize.sync({ force: false });
     console.log("Database schema synchronized successfully.");
 
     // 3. Seed Roles

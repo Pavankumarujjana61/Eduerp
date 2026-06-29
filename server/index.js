@@ -47,6 +47,9 @@ async function startServer() {
     // Start listening immediately so Hostinger health check passes
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
+        console.log(`DB_HOST: ${process.env.DB_HOST}`);
+        console.log(`DB_USER: ${process.env.DB_USER}`);
+        console.log(`DB_NAME: ${process.env.DB_NAME}`);
     });
 
     // Then connect to DB in background
@@ -55,6 +58,7 @@ async function startServer() {
         console.log("Database sync complete.");
     } catch (err) {
         console.error("Database sync failed (server still running):", err.message);
+        console.error("Full error:", err);
     }
 }
 

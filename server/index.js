@@ -44,13 +44,17 @@ app.get('*', (req, res) => {
 
 // Sync database and start server
 async function startServer() {
+    // Start listening immediately so Hostinger health check passes
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+
+    // Then connect to DB in background
     try {
         await syncAndSeed();
-        app.listen(PORT, () => {
-            console.log(`Server is running in structured mode on port ${PORT}`);
-        });
+        console.log("Database sync complete.");
     } catch (err) {
-        console.error("Failed to sync database and start server:", err);
+        console.error("Database sync failed (server still running):", err.message);
     }
 }
 

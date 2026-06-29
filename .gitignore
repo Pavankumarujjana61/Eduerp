@@ -1,0 +1,19 @@
+# Environment files - NEVER commit these
+server/.env
+.env
+
+# Node modules
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# React build (server/public lo already undi)
+client/build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

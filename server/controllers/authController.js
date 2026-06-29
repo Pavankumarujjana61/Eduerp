@@ -59,7 +59,14 @@ exports.login = async (req, res) => {
             }
         });
     } catch (err) {
-        console.error("Error logging in:", err);
-        return res.status(500).json({ success: false, message: 'Server error during authentication' });
+        console.error("Login error:", err.message);
+        console.error("DB Host:", process.env.DB_HOST);
+        console.error("DB User:", process.env.DB_USER);
+        console.error("DB Name:", process.env.DB_NAME);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Server error during authentication',
+            debug: err.message
+        });
     }
 };

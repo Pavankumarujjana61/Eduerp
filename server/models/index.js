@@ -29,7 +29,9 @@ async function initSequelize() {
     sequelize = new Sequelize(dbName, dbUser, dbPassword, {
         host: dbHost,
         dialect: 'mysql',
-        logging: false, // set to console.log to see SQL queries
+        logging: false,
+        pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
+        dialectOptions: { connectTimeout: 10000 },
         define: {
             paranoid: true,
             underscored: true,
@@ -42,11 +44,13 @@ async function initSequelize() {
     return sequelize;
 }
 
-// Instantiate immediately so models can be registered, but async database connection will run
+// Instantiate immediately so models can be registered
 sequelize = new Sequelize(dbName, dbUser, dbPassword, {
     host: dbHost,
     dialect: 'mysql',
     logging: false,
+    pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
+    dialectOptions: { connectTimeout: 10000 },
     define: {
         paranoid: true,
         underscored: true,

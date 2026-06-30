@@ -9,7 +9,7 @@ const parentRoutes = require('./routes/parentRoutes');
 const { syncAndSeed } = require('./models/sync');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 const path = require('path');
 
@@ -17,50 +17,37 @@ const path = require('path');
 app.use(cors());
 app.use(express.json());
 
-// Request logging middleware
-app.use((req, res, next) => {
-    console.log(`[REQUEST] ${req.method} ${req.url}`, req.body);
-    const originalJson = res.json;
-    res.json = function(data) {
-        console.log(`[RESPONSE] ${req.method} ${req.url} -> Status ${res.statusCode}:`, data);
-        return originalJson.call(this, data);
-    };
-    next();
-});
-
 // Mount API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/teacher', teacherRoutes);
 app.use('/api/parent', parentRoutes);
 
-// Serve static React build files from public directory
+// Serve static React build files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Catch-all route to serve React app for client routing
+// Catch-all route for React
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-// Sync database and start server
+// Start server
 async function startServer() {
-    // Start listening immediately so Hostinger health check passes
+    // 1. Start listening immediately — Hostinger health check passes
     app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
+        console.log(`Server running on port ${PORT}`);
         console.log(`DB_HOST: ${process.env.DB_HOST}`);
         console.log(`DB_USER: ${process.env.DB_USER}`);
         console.log(`DB_NAME: ${process.env.DB_NAME}`);
     });
 
-    // Then connect to DB in background
+    // 2. Init DB + tables + seed in background
     try {
         await syncAndSeed();
-        console.log("Database sync complete.");
+        console.log("DB init complete — ready!");
     } catch (err) {
-        console.error("Database sync failed (server still running):", err.message);
-        console.error("Full error:", err);
+        console.error("DB init failed:", err.message);
     }
 }
 
 startServer();
-

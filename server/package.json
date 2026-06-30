@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node index.js"
+    "dev": "node index.js",
+    "db:init": "node db.js",
+    "db:start": "node db.js && node index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

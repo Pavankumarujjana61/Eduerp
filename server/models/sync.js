@@ -14,8 +14,12 @@ async function syncAndSeed() {
     console.log("DB_NAME:", process.env.DB_NAME);
     console.log("PORT:", process.env.PORT);
     
-    // 1. Initialize DB creation if not exists
-    await initSequelize();
+    // 1. Initialize - skip CREATE DATABASE (Hostinger DB already exists)
+    try {
+        await initSequelize();
+    } catch (err) {
+        console.warn("initSequelize warning (continuing):", err.message);
+    }
 
     // 2. Sync schema - create tables if they don't exist
     await sequelize.sync({ force: false });

@@ -13,19 +13,22 @@ let sequelize;
 // Function to ensure database exists and return Sequelize instance
 async function initSequelize() {
     try {
-        // Create database if not exists
+        // Try to create database if not exists (may fail on Hostinger - that's OK)
         const connection = await mysql.createConnection({
             host: dbHost,
             user: dbUser,
-            password: dbPassword
+            password: dbPassword,
+            connectTimeout: 10000
         });
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
         await connection.end();
         console.log(`Database verified/created: ${dbName}`);
     } catch (err) {
-        console.error("Error creating database through raw mysql:", err.message);
+        // Hostinger DB already exists - this is expected, continue
+        console.warn(`DB create skipped (DB already exists or no permission): ${err.message}`);
     }
 
+    // Re-initialize sequelize with correct DB
     sequelize = new Sequelize(dbName, dbUser, dbPassword, {
         host: dbHost,
         dialect: 'mysql',

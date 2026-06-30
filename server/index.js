@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const path = require('path');
+
+// Load .env from server/ folder regardless of where app is started from
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
@@ -9,7 +12,7 @@ const parentRoutes = require('./routes/parentRoutes');
 const { syncAndSeed } = require('./models/sync');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 const path = require('path');
 

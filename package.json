@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "build": "npm install --prefix server",
-    "dev": "node server/index.js",
+    "dev": "npm run dev --prefix server",
     "db:init": "node server/db.js",
     "db:start": "node server/db.js && node server/index.js"
   },

@@ -1,6 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const mysql = require('mysql2/promise');
-// Note: dotenv is loaded in index.js - no need to load again here
+const path = require('path');
+// Load .env from server/ folder - works from any working directory
+require('dotenv').config({ path: path.join(__dirname, '../server/.env') });
 
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbUser = process.env.DB_USER || 'root';

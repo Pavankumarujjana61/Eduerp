@@ -36,11 +36,11 @@ async function initSequelize() {
         pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
         dialectOptions: { connectTimeout: 10000 },
         define: {
-            paranoid: true,
+            paranoid: false,
             underscored: true,
+            timestamps: true,
             createdAt: 'created_at',
-            updatedAt: 'updated_at',
-            deletedAt: 'deleted_at'
+            updatedAt: 'updated_at'
         }
     });
 
@@ -55,11 +55,11 @@ sequelize = new Sequelize(dbName, dbUser, dbPassword, {
     pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
     dialectOptions: { connectTimeout: 10000 },
     define: {
-        paranoid: true,
+        paranoid: false,
         underscored: true,
+        timestamps: true,
         createdAt: 'created_at',
-        updatedAt: 'updated_at',
-        deletedAt: 'deleted_at'
+        updatedAt: 'updated_at'
     }
 });
 
